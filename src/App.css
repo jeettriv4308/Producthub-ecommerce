@@ -1,0 +1,27 @@
+
+/* ProductHub central stylesheet */
+
+/* Common components */
+@import "./components/common/Button.css";
+@import "./components/common/EmptyState.css";
+@import "./components/common/ProductSkeleton.css";
+
+/* Layout */
+@import "./components/layout/Navbar.css";
+@import "./components/layout/Footer.css";
+
+/* Product components */
+@import "./components/products/ProductCard.css";
+@import "./components/products/ProductGrid.css";
+
+/* Pages */
+@import "./pages/Home.css";
+@import "./pages/Products.css";
+@import "./pages/ProductDetails.css";
+@import "./pages/Wishlist.css";
+@import "./pages/Cart.css";
+@import "./pages/NotFound.css";
+
+/* Shared and responsive styles */
+@import "./styles/sections.css";
+@import "./styles/responsive.css";
