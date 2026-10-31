@@ -1,4 +1,3 @@
-
 import { Route, Routes } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 
@@ -19,6 +18,7 @@ export default function App() {
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/products" element={<Products />} />
       </Route>
     </Routes>
   );

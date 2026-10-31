@@ -87,21 +87,36 @@
   white-space: nowrap;
 }
 
-.filter-control select {
-  max-width: 180px;
-  min-width: 125px;
+/* Select dropdown and price inputs */
+.filter-control select,
+.filter-control input {
   height: 44px;
-  padding: 0 30px 0 11px;
+  padding: 0 11px;
   border: 1px solid #e4e4e7;
   border-radius: 8px;
   outline: none;
   background: #fff;
   color: #09090b;
   font-size: 12px;
+}
+
+/* Dropdown styling */
+.filter-control select {
+  max-width: 180px;
+  min-width: 125px;
+  padding-right: 30px;
   text-transform: capitalize;
 }
 
-.filter-control select:focus-visible {
+/* Price input styling */
+.filter-control input {
+  width: 110px;
+  min-width: 0;
+}
+
+/* Focus effect */
+.filter-control select:focus-visible,
+.filter-control input:focus-visible {
   border-color: #b45309;
   outline: 2px solid rgb(180 83 9 / 15%);
 }
