@@ -1,16 +1,36 @@
 
+/* =================================
+   PRODUCTS HEADER
+================================= */
+
+.products-header {
+  margin-bottom: 24px;
+}
+
+.products-header .section-heading {
+  margin-bottom: 8px;
+}
+
+/* =================================
+   PRODUCTS TOOLBAR
+================================= */
+
 .products-toolbar {
   display: grid;
-  grid-template-columns: minmax(220px, 1fr) auto auto;
+  grid-template-columns: minmax(200px, 1fr) auto auto auto auto;
   align-items: center;
   gap: 14px;
   margin-bottom: 18px;
   padding: 14px;
   border: 1px solid #e4e4e7;
   border-radius: 14px;
-  background: #fff;
+  background: #ffffff;
   box-shadow: 0 4px 18px rgb(9 9 11 / 3%);
 }
+
+/* =================================
+   SEARCH BOX
+================================= */
 
 .search-box {
   display: flex;
@@ -27,12 +47,12 @@
 
 .search-box:focus-within {
   border-color: #b45309;
-  background: #fff;
+  background: #ffffff;
   box-shadow: 0 0 0 3px rgb(180 83 9 / 10%);
 }
 
 .search-icon {
-  color: #71717a;
+  color: #b45309;
   font-size: 25px;
   line-height: 1;
 }
@@ -57,6 +77,8 @@
   cursor: pointer;
 }
 
+/* Clear Search */
+
 .clear-search {
   display: grid;
   width: 28px;
@@ -65,14 +87,21 @@
   place-items: center;
   border: 0;
   border-radius: 50%;
-  background: #e4e4e7;
-  color: #09090b;
+  background: #fef3e8;
+  color: #b45309;
   font-size: 20px;
+  cursor: pointer;
+  transition: all 180ms ease;
 }
 
 .clear-search:hover {
-  background: #d4d4d8;
+  background: #b45309;
+  color: #ffffff;
 }
+
+/* =================================
+   FILTER CONTROLS
+================================= */
 
 .filter-control {
   display: flex;
@@ -87,7 +116,8 @@
   white-space: nowrap;
 }
 
-/* Select dropdown and price inputs */
+/* Select and Price Inputs */
+
 .filter-control select,
 .filter-control input {
   height: 44px;
@@ -95,37 +125,81 @@
   border: 1px solid #e4e4e7;
   border-radius: 8px;
   outline: none;
-  background: #fff;
+  background: #ffffff;
   color: #09090b;
   font-size: 12px;
+  transition: all 180ms ease;
 }
 
-/* Dropdown styling */
 .filter-control select {
   max-width: 180px;
   min-width: 125px;
   padding-right: 30px;
   text-transform: capitalize;
+  cursor: pointer;
 }
 
-/* Price input styling */
 .filter-control input {
-  width: 110px;
+  width: 85px;
   min-width: 0;
 }
 
-/* Focus effect */
+/* Filter Hover and Focus */
+
+.filter-control select:hover,
+.filter-control input:hover {
+  border-color: #d6a47e;
+}
+
 .filter-control select:focus-visible,
 .filter-control input:focus-visible {
   border-color: #b45309;
   outline: 2px solid rgb(180 83 9 / 15%);
 }
 
+/* =================================
+   CLEAR FILTERS BUTTON
+================================= */
+
+.clear-filters-btn {
+  height: 42px;
+  padding: 0 16px;
+  border: 1px solid #b45309;
+  border-radius: 8px;
+  background: #b45309;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 3px 9px rgb(180 83 9 / 15%);
+  transition: all 180ms ease;
+}
+
+.clear-filters-btn:hover {
+  background: #92400e;
+  border-color: #92400e;
+  box-shadow: 0 5px 12px rgb(180 83 9 / 20%);
+  transform: translateY(-2px);
+}
+
+.clear-filters-btn:active {
+  transform: translateY(0);
+}
+
+/* =================================
+   RESULTS SUMMARY
+================================= */
+
 .results-summary {
   margin: 0 0 20px;
   color: #71717a;
   font-size: 13px;
 }
+
+/* =================================
+   LOADING STATE
+================================= */
 
 .products-loading {
   display: flex;
@@ -153,15 +227,21 @@
   }
 }
 
+/* =================================
+   ERROR STATE
+================================= */
+
 .products-error {
   padding: 32px 20px;
   border: 1px solid #e4e4e7;
   border-radius: 14px;
+  background: #ffffff;
   text-align: center;
 }
 
 .products-error h2 {
   margin: 0 0 8px;
+  color: #09090b;
   font-size: 20px;
 }
 
@@ -170,21 +250,39 @@
   font-size: 14px;
 }
 
+/* Retry Button */
+
 .retry-button {
   margin-top: 10px;
-  padding: 11px 18px;
-  border: 0;
+  padding: 11px 20px;
+  border: 1px solid #b45309;
   border-radius: 8px;
-  background: #09090b;
-  color: white;
+  background: #b45309;
+  color: #ffffff;
+  font-size: 13px;
   font-weight: 600;
+  cursor: pointer;
+  transition: all 200ms ease;
 }
 
 .retry-button:hover {
-  background: #b45309;
+  background: #92400e;
+  border-color: #92400e;
+  transform: translateY(-2px);
 }
 
-@media (max-width: 900px) {
+.retry-button:focus-visible,
+.clear-search:focus-visible,
+.clear-filters-btn:focus-visible {
+  outline: 2px solid #b45309;
+  outline-offset: 3px;
+}
+
+/* =================================
+   RESPONSIVE DESIGN
+================================= */
+
+@media (max-width: 1200px) {
   .products-toolbar {
     grid-template-columns: 1fr 1fr;
   }
@@ -201,6 +299,10 @@
     max-width: none;
     min-width: 0;
     flex: 1;
+  }
+
+  .clear-filters-btn {
+    width: 100%;
   }
 }
 
@@ -221,5 +323,10 @@
 
   .filter-control > span {
     min-width: 64px;
+  }
+
+  .filter-control input {
+    flex: 1;
+    width: 100%;
   }
 }

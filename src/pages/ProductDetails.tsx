@@ -68,22 +68,67 @@ export default function ProductDetails() {
   }
 
   return (
-    <main className="container section">
-      <p><Link to="/products">← Back to products</Link></p>
+  <main className="container section">
+    <Link to="/products" className="back-link">
+      ← Back to products
+    </Link>
 
-      <div className="details-layout">
-        <img src={product.thumbnail} alt={product.title} />
-
-        <div>
-          <span className="eyebrow">{product.category}</span>
-          <h1 className="section-heading">{product.title}</h1>
-          {product.brand && <p>{product.brand}</p>}
-          <p className="details-rating">★ {product.rating.toFixed(1)} rating</p>
-          <p className="section-description">{product.description}</p>
-          <h2>${product.price.toFixed(2)}</h2>
-          <p>{product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}</p>
-        </div>
+    <div className="details-layout">
+      <div className="details-image">
+        <img
+          src={product.thumbnail}
+          alt={product.title}
+        />
       </div>
-    </main>
-  );
+
+      <div className="details-content">
+        <span className="eyebrow">
+          {product.category}
+        </span>
+
+        <h1 className="section-heading">
+          {product.title}
+        </h1>
+
+        {product.brand && (
+          <p className="details-brand">
+            {product.brand}
+          </p>
+        )}
+
+        <p className="details-rating">
+          ★ {product.rating.toFixed(1)} / 5
+        </p>
+
+        <p className="section-description">
+          {product.description}
+        </p>
+
+        <h2 className="details-price">
+          ${product.price.toFixed(2)}
+        </h2>
+
+        {product.discountPercentage !== undefined && (
+          <p className="details-discount">
+            {product.discountPercentage.toFixed(1)}% discount
+          </p>
+        )}
+
+        <p className="details-stock">
+          {product.stock > 0
+            ? `${product.stock} items available`
+            : "Out of stock"}
+        </p>
+
+        <button
+          type="button"
+          className="details-cart-btn"
+          disabled={product.stock <= 0}
+        >
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  </main>
+);
 }
