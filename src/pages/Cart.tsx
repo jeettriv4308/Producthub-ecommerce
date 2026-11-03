@@ -52,6 +52,8 @@ export default function Cart() {
                     className="cart-item-image"
                     src={item.product.thumbnail}
                     alt={item.product.title}
+                    loading="lazy"
+                    decoding="async"
                   />
                 </Link>
 

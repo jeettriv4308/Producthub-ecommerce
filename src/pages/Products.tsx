@@ -1,5 +1,4 @@
-
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import ProductGrid from "../components/products/ProductGrid";
@@ -19,7 +18,6 @@ const LIMIT = 12;
 export default function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // URL Parameters
   const search = searchParams.get("search") || "";
   const category = searchParams.get("category") || "All";
   const sort = searchParams.get("sort") || "featured";
@@ -31,26 +29,24 @@ export default function Products() {
     Number(searchParams.get("page")) || 1
   );
 
-  // Product States
   const [products, setProducts] = useState<Product[]>([]);
   const [total, setTotal] = useState(0);
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [retry, setRetry] = useState(0);
 
-  // Debounced Search
+  // Debounced search
   const [debouncedSearch, setDebouncedSearch] = useState(search);
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
       setDebouncedSearch(search);
-    }, 350);
+    }, 400);
 
     return () => window.clearTimeout(timer);
   }, [search]);
 
-  // Update URL Parameters
+  // Update URL parameters
   function updateParam(key: string, value: string) {
     const newParams = new URLSearchParams(searchParams);
 
@@ -67,12 +63,11 @@ export default function Products() {
     setSearchParams(newParams, { replace: true });
   }
 
-  // Clear All Filters
   function clearFilters() {
     setSearchParams({}, { replace: true });
   }
 
-  // Fetch Products
+  // Fetch products
   useEffect(() => {
     let active = true;
 
@@ -120,60 +115,54 @@ export default function Products() {
     };
   }, [debouncedSearch, currentPage, retry]);
 
-  // Category and Price Filters
-  let filteredProducts = products.filter((product) => {
-    const matchesCategory =
-      category === "All" || product.category === category;
+  // Memoized filtering and sorting
+  const filteredProducts = useMemo(() => {
+    const filtered = products.filter((product) => {
+      const matchesCategory =
+        category === "All" || product.category === category;
 
-    const matchesMinPrice =
-      minPrice === "" || product.price >= Number(minPrice);
+      const matchesMinPrice =
+        minPrice === "" || product.price >= Number(minPrice);
 
-    const matchesMaxPrice =
-      maxPrice === "" || product.price <= Number(maxPrice);
+      const matchesMaxPrice =
+        maxPrice === "" || product.price <= Number(maxPrice);
 
-    return (
-      matchesCategory &&
-      matchesMinPrice &&
-      matchesMaxPrice
-    );
-  });
+      return (
+        matchesCategory &&
+        matchesMinPrice &&
+        matchesMaxPrice
+      );
+    });
 
-  // Sorting
-  filteredProducts = [...filteredProducts].sort((a, b) => {
-    switch (sort) {
-      case "price-low":
-        return a.price - b.price;
+    return filtered.sort((a, b) => {
+      switch (sort) {
+        case "price-low":
+          return a.price - b.price;
 
-      case "price-high":
-        return b.price - a.price;
+        case "price-high":
+          return b.price - a.price;
 
-      case "rating":
-        return b.rating - a.rating;
+        case "rating":
+          return b.rating - a.rating;
 
-      default:
-        return 0;
-    }
-  });
+        default:
+          return 0;
+      }
+    });
+  }, [products, category, minPrice, maxPrice, sort]);
 
-  // Pagination
   const totalPages = Math.ceil(total / LIMIT);
 
   return (
     <main className="container section">
-
-      {/* Page Header */}
       <div className="products-header">
         <h1 className="section-heading">All Products</h1>
-
         <p className="section-description">
           Discover our collection of products.
         </p>
       </div>
 
-      {/* Search and Filters */}
       <div className="products-toolbar">
-
-        {/* Search */}
         <div className="search-box">
           <span className="search-icon">⌕</span>
 
@@ -199,10 +188,8 @@ export default function Products() {
           )}
         </div>
 
-        {/* Category */}
         <div className="filter-control">
           <span>Category</span>
-
           <select
             value={category}
             onChange={(event) =>
@@ -217,10 +204,8 @@ export default function Products() {
           </select>
         </div>
 
-        {/* Price */}
         <div className="filter-control">
           <span>Price</span>
-
           <input
             type="number"
             placeholder="Min"
@@ -231,7 +216,6 @@ export default function Products() {
             }
             aria-label="Minimum price"
           />
-
           <input
             type="number"
             placeholder="Max"
@@ -244,10 +228,8 @@ export default function Products() {
           />
         </div>
 
-        {/* Sorting */}
         <div className="filter-control">
           <span>Sort</span>
-
           <select
             value={sort}
             onChange={(event) =>
@@ -261,7 +243,6 @@ export default function Products() {
           </select>
         </div>
 
-        {/* Clear Filters */}
         <button
           type="button"
           className="clear-filters-btn"
@@ -269,15 +250,12 @@ export default function Products() {
         >
           Clear Filters
         </button>
-
       </div>
 
-      {/* Results Summary */}
       <p className="results-summary">
         Showing {filteredProducts.length} products on this page
       </p>
 
-      {/* Loading */}
       {loading && (
         <div className="products-loading">
           <div className="loading-spinner"></div>
@@ -285,7 +263,6 @@ export default function Products() {
         </div>
       )}
 
-      {/* Error */}
       {!loading && error && (
         <div className="products-error">
           <h2>Unable to load products</h2>
@@ -301,12 +278,10 @@ export default function Products() {
         </div>
       )}
 
-      {/* Product Grid */}
       {!loading && !error && filteredProducts.length > 0 && (
         <ProductGrid products={filteredProducts} />
       )}
 
-      {/* Empty State */}
       {!loading && !error && filteredProducts.length === 0 && (
         <EmptyState
           title="No products found"
@@ -314,7 +289,6 @@ export default function Products() {
         />
       )}
 
-      {/* Pagination */}
       {!loading && !error && totalPages > 1 && (
         <Pagination
           currentPage={currentPage}
@@ -324,7 +298,6 @@ export default function Products() {
           }
         />
       )}
-
     </main>
   );
 }

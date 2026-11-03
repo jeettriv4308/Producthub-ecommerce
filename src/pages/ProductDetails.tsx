@@ -82,7 +82,13 @@ export default function ProductDetails() {
 
       <div className="details-layout">
         <div className="details-image">
-          <img src={product.thumbnail} alt={product.title} />
+          <img
+              src={product.thumbnail}
+              alt={product.title}
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
+          />
         </div>
 
         <div className="details-content">

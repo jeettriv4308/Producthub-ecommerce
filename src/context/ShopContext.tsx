@@ -1,8 +1,9 @@
-
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
   type ReactNode,
 } from "react";
@@ -70,7 +71,7 @@ export function ShopProvider({ children }: ShopProviderProps) {
   }, [wishlist]);
 
   // Add product to cart
-  function addToCart(product: Product) {
+  const addToCart = useCallback((product: Product) => {
     if (product.stock <= 0) return;
 
     setCart((previousCart) => {
@@ -94,43 +95,49 @@ export function ShopProvider({ children }: ShopProviderProps) {
 
       return [...previousCart, { product, quantity: 1 }];
     });
-  }
+  }, []);
 
   // Remove product from cart
-  function removeFromCart(productId: number) {
+  const removeFromCart = useCallback((productId: number) => {
     setCart((previousCart) =>
       previousCart.filter(
         (item) => item.product.id !== productId
       )
     );
-  }
+  }, []);
 
-  // Update product quantity
-  function updateQuantity(productId: number, quantity: number) {
-    if (quantity <= 0) {
-      removeFromCart(productId);
-      return;
-    }
+  // Update quantity
+  const updateQuantity = useCallback(
+    (productId: number, quantity: number) => {
+      if (quantity <= 0) {
+        removeFromCart(productId);
+        return;
+      }
 
-    setCart((previousCart) =>
-      previousCart.map((item) =>
-        item.product.id === productId
-          ? {
-              ...item,
-              quantity: Math.min(quantity, item.product.stock),
-            }
-          : item
-      )
-    );
-  }
+      setCart((previousCart) =>
+        previousCart.map((item) =>
+          item.product.id === productId
+            ? {
+                ...item,
+                quantity: Math.min(
+                  quantity,
+                  item.product.stock
+                ),
+              }
+            : item
+        )
+      );
+    },
+    [removeFromCart]
+  );
 
-  // Clear entire cart
-  function clearCart() {
+  // Clear cart
+  const clearCart = useCallback(() => {
     setCart([]);
-  }
+  }, []);
 
-  // Add product to wishlist
-  function addToWishlist(product: Product) {
+  // Add to wishlist
+  const addToWishlist = useCallback((product: Product) => {
     setWishlist((previousWishlist) => {
       const alreadyExists = previousWishlist.some(
         (item) => item.id === product.id
@@ -140,73 +147,102 @@ export function ShopProvider({ children }: ShopProviderProps) {
 
       return [...previousWishlist, product];
     });
-  }
+  }, []);
 
-  // Remove product from wishlist
-  function removeFromWishlist(productId: number) {
+  // Remove from wishlist
+  const removeFromWishlist = useCallback((productId: number) => {
     setWishlist((previousWishlist) =>
       previousWishlist.filter(
         (product) => product.id !== productId
       )
     );
-  }
+  }, []);
 
   // Toggle wishlist
-  function toggleWishlist(product: Product) {
-    const exists = wishlist.some(
-      (item) => item.id === product.id
-    );
+  const toggleWishlist = useCallback((product: Product) => {
+    setWishlist((previousWishlist) => {
+      const exists = previousWishlist.some(
+        (item) => item.id === product.id
+      );
 
-    if (exists) {
-      removeFromWishlist(product.id);
-    } else {
-      addToWishlist(product);
-    }
-  }
+      if (exists) {
+        return previousWishlist.filter(
+          (item) => item.id !== product.id
+        );
+      }
 
-  // Check wishlist status
-  function isInWishlist(productId: number) {
-    return wishlist.some(
-      (product) => product.id === productId
-    );
-  }
+      return [...previousWishlist, product];
+    });
+  }, []);
 
-  // Calculate cart item count
-  const cartCount = cart.reduce(
-    (total, item) => total + item.quantity,
-    0
+  // Check wishlist
+  const isInWishlist = useCallback(
+    (productId: number) => {
+      return wishlist.some(
+        (product) => product.id === productId
+      );
+    },
+    [wishlist]
   );
 
-  // Calculate cart total
-  const cartTotal = cart.reduce(
-    (total, item) =>
-      total + item.product.price * item.quantity,
-    0
+  // Cart item count
+  const cartCount = useMemo(
+    () => cart.reduce(
+      (total, item) => total + item.quantity,
+      0
+    ),
+    [cart]
+  );
+
+  // Cart total
+  const cartTotal = useMemo(
+    () => cart.reduce(
+      (total, item) =>
+        total + item.product.price * item.quantity,
+      0
+    ),
+    [cart]
+  );
+
+  // Memoized context value
+  const value = useMemo(
+    () => ({
+      cart,
+      wishlist,
+      cartCount,
+      cartTotal,
+      addToCart,
+      removeFromCart,
+      updateQuantity,
+      clearCart,
+      addToWishlist,
+      removeFromWishlist,
+      toggleWishlist,
+      isInWishlist,
+    }),
+    [
+      cart,
+      wishlist,
+      cartCount,
+      cartTotal,
+      addToCart,
+      removeFromCart,
+      updateQuantity,
+      clearCart,
+      addToWishlist,
+      removeFromWishlist,
+      toggleWishlist,
+      isInWishlist,
+    ]
   );
 
   return (
-    <ShopContext.Provider
-      value={{
-        cart,
-        wishlist,
-        cartCount,
-        cartTotal,
-        addToCart,
-        removeFromCart,
-        updateQuantity,
-        clearCart,
-        addToWishlist,
-        removeFromWishlist,
-        toggleWishlist,
-        isInWishlist,
-      }}
-    >
+    <ShopContext.Provider value={value}>
       {children}
     </ShopContext.Provider>
   );
 }
 
-// Custom hook
 export function useShop() {
   const context = useContext(ShopContext);
 

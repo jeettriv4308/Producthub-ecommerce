@@ -1,5 +1,6 @@
+import { memo } from "react";
 import { Link } from "react-router-dom";
-import type { Product } from "../../data/demoProducts";
+import type { Product } from "../../types/product";
 import { useShop } from "../../context/ShopContext";
 import "./ProductCard.css";
 
@@ -7,7 +8,7 @@ type ProductCardProps = {
   product: Product;
 };
 
-export default function ProductCard({ product }: ProductCardProps) {
+function ProductCard({ product }: ProductCardProps) {
   const {
     addToCart,
     toggleWishlist,
@@ -28,6 +29,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             src={product.thumbnail}
             alt={product.title}
             loading="lazy"
+            decoding="async"
           />
         </Link>
 
@@ -81,3 +83,5 @@ export default function ProductCard({ product }: ProductCardProps) {
     </article>
   );
 }
+
+export default memo(ProductCard);

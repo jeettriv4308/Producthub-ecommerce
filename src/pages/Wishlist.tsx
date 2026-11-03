@@ -47,6 +47,8 @@ export default function Wishlist() {
                     src={product.thumbnail}
                     alt={product.title}
                     className="wishlist-image"
+                    loading="lazy"
+                    decoding="async"
                   />
                 </Link>
 
