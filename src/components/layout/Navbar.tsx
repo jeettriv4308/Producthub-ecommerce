@@ -1,10 +1,13 @@
 
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { useShop } from "../../context/ShopContext";
 import "./Navbar.css";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const { cartCount, wishlist } = useShop();
 
   function closeMenu() {
     setMenuOpen(false);
@@ -32,15 +35,19 @@ export default function Navbar() {
           <NavLink to="/" end onClick={closeMenu}>
             Home
           </NavLink>
+
           <NavLink to="/products" onClick={closeMenu}>
             Products
           </NavLink>
+
           <NavLink to="/wishlist" onClick={closeMenu}>
-            Wishlist
+            Wishlist ({wishlist.length})
           </NavLink>
+
           <NavLink to="/cart" onClick={closeMenu}>
-            Cart
+            Cart ({cartCount})
           </NavLink>
+
           <Link to="/products" className="nav-cta" onClick={closeMenu}>
             Explore store ↗
           </Link>

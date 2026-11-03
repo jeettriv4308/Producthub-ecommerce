@@ -138,3 +138,28 @@
     flex-direction: column;
   }
 }
+
+.product-add-cart {
+  width: 100%;
+  margin-top: 14px;
+  padding: 11px 16px;
+  border: 1px solid #b45309;
+  border-radius: 9px;
+  background: #b45309;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.product-add-cart:hover:not(:disabled) {
+  background: #92400e;
+  border-color: #92400e;
+  transform: translateY(-2px);
+}
+
+.product-add-cart:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

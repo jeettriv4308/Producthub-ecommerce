@@ -1,7 +1,6 @@
-
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import type { Product } from "../../data/demoProducts";
+import { useShop } from "../../context/ShopContext";
 import "./ProductCard.css";
 
 type ProductCardProps = {
@@ -9,12 +8,21 @@ type ProductCardProps = {
 };
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const [isFavorite, setIsFavorite] = useState(false);
+  const {
+    addToCart,
+    toggleWishlist,
+    isInWishlist,
+  } = useShop();
+
+  const isFavorite = isInWishlist(product.id);
 
   return (
     <article className="product-card">
       <div className="product-image-wrap">
-        <Link to={`/products/${product.id}`} aria-label={`View ${product.title}`}>
+        <Link
+          to={`/products/${product.id}`}
+          aria-label={`View ${product.title}`}
+        >
           <img
             className="product-image"
             src={product.thumbnail}
@@ -26,8 +34,10 @@ export default function ProductCard({ product }: ProductCardProps) {
         <button
           className={`wishlist-button ${isFavorite ? "is-favorite" : ""}`}
           type="button"
-          aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
-          onClick={() => setIsFavorite(!isFavorite)}
+          aria-label={
+            isFavorite ? "Remove from wishlist" : "Add to wishlist"
+          }
+          onClick={() => toggleWishlist(product)}
         >
           {isFavorite ? "♥" : "♡"}
         </button>
@@ -58,6 +68,15 @@ export default function ProductCard({ product }: ProductCardProps) {
             View details <span aria-hidden="true">↗</span>
           </Link>
         </div>
+
+        <button
+          type="button"
+          className="product-add-cart"
+          disabled={product.stock <= 0}
+          onClick={() => addToCart(product)}
+        >
+          {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
+        </button>
       </div>
     </article>
   );
