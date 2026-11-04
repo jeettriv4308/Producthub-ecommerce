@@ -1,0 +1,10 @@
+
+import "@testing-library/jest-dom/vitest";
+
+import { afterEach } from "vitest";
+import { cleanup } from "@testing-library/react";
+
+// Clean up rendered components after every test
+afterEach(() => {
+  cleanup();
+});

@@ -1,12 +1,58 @@
 
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+
 import ProductGrid from "../components/products/ProductGrid";
-import { demoProducts } from "../data/demoProducts";
+import ErrorState from "../components/common/ErrorState";
+
+import { getProducts } from "../services/productService";
+import type { Product } from "../types/product";
+
 import "./Home.css";
 
 export default function Home() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadFeaturedProducts() {
+      try {
+        setLoading(true);
+        setError("");
+
+        const result = await getProducts(4, 0);
+
+        if (active) {
+          setProducts(result.products);
+        }
+      } catch (err) {
+        if (active) {
+          setError(
+            err instanceof Error
+              ? err.message
+              : "Unable to load featured products."
+          );
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    }
+
+    void loadFeaturedProducts();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
   return (
     <>
+      {/* HERO SECTION */}
       <section className="hero">
         <div className="container hero-inner">
           <div className="hero-content">
@@ -38,7 +84,10 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="hero-visual" aria-label="Featured product illustration">
+          <div
+            className="hero-visual"
+            aria-label="Featured product illustration"
+          >
             <div className="hero-circle">
               <div className="hero-product">
                 <span className="hero-product-icon">P.</span>
@@ -47,9 +96,11 @@ export default function Home() {
                 <strong>ON YOUR DEVICE.</strong>
               </div>
             </div>
+
             <div className="hero-floating hero-floating-top">
               <span>✦</span> Curated essentials
             </div>
+
             <div className="hero-floating hero-floating-bottom">
               <strong>All</strong>Collection
             </div>
@@ -57,7 +108,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="container benefits-grid" aria-label="Store highlights">
+      {/* BENEFITS SECTION */}
+      <section
+        className="container benefits-grid"
+        aria-label="Store highlights"
+      >
         <div className="benefit">
           <span className="benefit-icon">✳</span>
           <div>
@@ -83,11 +138,16 @@ export default function Home() {
         </div>
       </section>
 
+      {/* FEATURED PRODUCTS */}
       <section className="container section" id="featured">
         <div className="section-top">
           <div>
             <span className="eyebrow">HANDPICKED FOR YOU</span>
-            <h2 className="section-heading">Featured products</h2>
+
+            <h2 className="section-heading">
+              Featured products
+            </h2>
+
             <p className="section-description">
               A preview of what you can discover at ProductHub.
             </p>
@@ -98,7 +158,31 @@ export default function Home() {
           </Link>
         </div>
 
-        <ProductGrid products={demoProducts.slice(0, 4)} />
+        {/* Loading State */}
+        {loading && (
+          <div
+            className="products-loading"
+            role="status"
+            aria-live="polite"
+          >
+            <div className="loading-spinner" aria-hidden="true"></div>
+            <p>Loading featured products...</p>
+          </div>
+        )}
+
+        {/* Error State */}
+        {!loading && error && (
+          <ErrorState
+            title="Unable to load featured products"
+            message={error}
+            onRetry={() => window.location.reload()}
+          />
+        )}
+
+        {/* API Products */}
+        {!loading && !error && products.length > 0 && (
+          <ProductGrid products={products} />
+        )}
       </section>
     </>
   );

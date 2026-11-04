@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import ProductGrid from "../components/products/ProductGrid";
 import Pagination from "../components/products/Pagination";
 import EmptyState from "../components/common/EmptyState";
+import ErrorState from "../components/common/ErrorState";
 
 import {
   getProducts,
@@ -35,7 +36,7 @@ export default function Products() {
   const [error, setError] = useState("");
   const [retry, setRetry] = useState(0);
 
-  // Debounced search
+  // Debounced search (400ms)
   const [debouncedSearch, setDebouncedSearch] = useState(search);
 
   useEffect(() => {
@@ -63,6 +64,7 @@ export default function Products() {
     setSearchParams(newParams, { replace: true });
   }
 
+  // Clear all filters
   function clearFilters() {
     setSearchParams({}, { replace: true });
   }
@@ -155,133 +157,189 @@ export default function Products() {
 
   return (
     <main className="container section">
+      {/* Products Header */}
       <div className="products-header">
         <h1 className="section-heading">All Products</h1>
+
         <p className="section-description">
           Discover our collection of products.
         </p>
       </div>
 
-      <div className="products-toolbar">
-        <div className="search-box">
-          <span className="search-icon">⌕</span>
+      
+    {/* Search and Filters */}
+    <div className="products-toolbar">
 
-          <input
-            type="search"
-            placeholder="Search products..."
-            value={search}
-            onChange={(event) =>
-              updateParam("search", event.target.value)
-            }
-            aria-label="Search products"
-          />
+      {/* Search Box */}
+      <div className="search-box">
+        <span className="search-icon" aria-hidden="true">
+          ⌕
+        </span>
 
-          {search && (
-            <button
-              type="button"
-              className="clear-search"
-              onClick={() => updateParam("search", "")}
-              aria-label="Clear search"
-            >
-              ×
-            </button>
-          )}
-        </div>
-
-        <div className="filter-control">
-          <span>Category</span>
-          <select
-            value={category}
-            onChange={(event) =>
-              updateParam("category", event.target.value)
-            }
-          >
-            <option value="All">All Categories</option>
-            <option value="beauty">Beauty</option>
-            <option value="fragrances">Fragrances</option>
-            <option value="furniture">Furniture</option>
-            <option value="groceries">Groceries</option>
-          </select>
-        </div>
-
-        <div className="filter-control">
-          <span>Price</span>
-          <input
-            type="number"
-            placeholder="Min"
-            min="0"
-            value={minPrice}
-            onChange={(event) =>
-              updateParam("minPrice", event.target.value)
-            }
-            aria-label="Minimum price"
-          />
-          <input
-            type="number"
-            placeholder="Max"
-            min="0"
-            value={maxPrice}
-            onChange={(event) =>
-              updateParam("maxPrice", event.target.value)
-            }
-            aria-label="Maximum price"
-          />
-        </div>
-
-        <div className="filter-control">
-          <span>Sort</span>
-          <select
-            value={sort}
-            onChange={(event) =>
-              updateParam("sort", event.target.value)
-            }
-          >
-            <option value="featured">Featured</option>
-            <option value="price-low">Price: Low to High</option>
-            <option value="price-high">Price: High to Low</option>
-            <option value="rating">Top Rated</option>
-          </select>
-        </div>
-
-        <button
-          type="button"
-          className="clear-filters-btn"
-          onClick={clearFilters}
+        <label
+          htmlFor="product-search"
+          className="sr-only"
         >
-          Clear Filters
-        </button>
+          Search products
+        </label>
+
+        <input
+          id="product-search"
+          type="search"
+          placeholder="Search products..."
+          value={search}
+          onChange={(event) =>
+            updateParam("search", event.target.value)
+          }
+        />
+
+        {search && (
+          <button
+            type="button"
+            className="clear-search"
+            onClick={() => updateParam("search", "")}
+            aria-label="Clear search"
+          >
+            ×
+          </button>
+        )}
       </div>
 
-      <p className="results-summary">
+      {/* Category Filter */}
+      <div className="filter-control">
+        <label htmlFor="product-category">
+          Category
+        </label>
+
+        <select
+          id="product-category"
+          value={category}
+          onChange={(event) =>
+            updateParam("category", event.target.value)
+          }
+        >
+          <option value="All">All Categories</option>
+          <option value="beauty">Beauty</option>
+          <option value="fragrances">Fragrances</option>
+          <option value="furniture">Furniture</option>
+          <option value="groceries">Groceries</option>
+        </select>
+      </div>
+
+      {/* Minimum Price */}
+      <div className="filter-control">
+        <label htmlFor="min-price">
+          Minimum Price
+        </label>
+
+        <input
+          id="min-price"
+          type="number"
+          placeholder="Min"
+          min="0"
+          value={minPrice}
+          aria-label="Minimum price"
+          onChange={(event) =>
+            updateParam("minPrice", event.target.value)
+          }
+        />
+      </div>
+
+      {/* Maximum Price */}
+      <div className="filter-control">
+        <label htmlFor="max-price">
+          Maximum Price
+        </label>
+
+        <input
+          id="max-price"
+          type="number"
+          placeholder="Max"
+          min="0"
+          value={maxPrice}
+          aria-label="Maximum price"
+          onChange={(event) =>
+            updateParam("maxPrice", event.target.value)
+          }
+        />
+      </div>
+
+      {/* Sorting */}
+      <div className="filter-control">
+        <label htmlFor="product-sort">
+          Sort
+        </label>
+
+        <select
+          id="product-sort"
+          value={sort}
+          aria-label="Sort products"
+          onChange={(event) =>
+            updateParam("sort", event.target.value)
+          }
+        >
+          <option value="featured">Featured</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="rating">Top Rated</option>
+        </select>
+      </div>
+
+      {/* Clear Filters */}
+      <button
+        type="button"
+        className="clear-filters-btn"
+        onClick={clearFilters}
+        aria-label="Clear all search and product filters"
+      >
+        Clear Filters
+      </button>
+
+    </div>
+
+
+      {/* Results Summary */}
+      <p
+        className="results-summary"
+        role="status"
+        aria-live="polite"
+      >
         Showing {filteredProducts.length} products on this page
       </p>
 
+      {/* Loading State */}
+      
       {loading && (
-        <div className="products-loading">
-          <div className="loading-spinner"></div>
-          <p>Loading products...</p>
+        <div
+          className="products-loading"
+          role="status"
+          aria-live="polite"
+        >
+          <div
+            className="loading-spinner"
+            aria-hidden="true"
+          ></div>
+
+          <p>Loading products, please wait...</p>
         </div>
       )}
 
+
+      {/* Error State */}
       {!loading && error && (
-        <div className="products-error">
-          <h2>Unable to load products</h2>
-          <p>{error}</p>
-
-          <button
-            type="button"
-            className="retry-button"
-            onClick={() => setRetry((value) => value + 1)}
-          >
-            Try Again
-          </button>
-        </div>
+        <ErrorState
+          title="Unable to load products"
+          message={error}
+          onRetry={() => setRetry((value) => value + 1)}
+        />
       )}
 
+      {/* Product Grid */}
       {!loading && !error && filteredProducts.length > 0 && (
         <ProductGrid products={filteredProducts} />
       )}
 
+      {/* Empty State */}
       {!loading && !error && filteredProducts.length === 0 && (
         <EmptyState
           title="No products found"
@@ -289,6 +347,7 @@ export default function Products() {
         />
       )}
 
+      {/* Pagination */}
       {!loading && !error && totalPages > 1 && (
         <Pagination
           currentPage={currentPage}

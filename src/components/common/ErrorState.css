@@ -1,0 +1,54 @@
+.error-state {
+  width: 100%;
+  padding: 50px 20px;
+  text-align: center;
+  border: 1px solid #e5e5e5;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.error-state-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.error-state h2 {
+  margin-bottom: 10px;
+  color: #09090b;
+  font-size: 22px;
+}
+
+.error-state p {
+  margin-bottom: 20px;
+  color: #71717a;
+  font-size: 14px;
+}
+
+.error-state-btn {
+  padding: 11px 22px;
+  border: 1px solid #b45309;
+  border-radius: 8px;
+  background: #b45309;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.error-state-btn:hover {
+  background: #92400e;
+}
+
+.error-state-btn:focus-visible {
+  outline: 3px solid #fbbf24;
+  outline-offset: 3px;
+}

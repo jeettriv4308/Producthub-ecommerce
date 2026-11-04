@@ -1,50 +1,46 @@
 
-import type { Product, ProductsResponse } from "../types/product";
+import type {
+  Product,
+  ProductsResponse,
+} from "../types/product";
 
 const API_URL = "https://dummyjson.com/products";
 
-// Fetch all products with pagination
+async function fetchData<T>(url: string): Promise<T> {
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error(
+      `Request failed. Status: ${response.status}`
+    );
+  }
+
+  return response.json() as Promise<T>;
+}
+
 export async function getProducts(
   limit: number = 12,
   skip: number = 0
 ): Promise<ProductsResponse> {
-  const response = await fetch(
+  return fetchData<ProductsResponse>(
     `${API_URL}?limit=${limit}&skip=${skip}`
   );
-
-  if (!response.ok) {
-    throw new Error("Unable to load products. Please try again.");
-  }
-
-  return response.json() as Promise<ProductsResponse>;
 }
 
-// Search products with pagination
 export async function searchProducts(
   query: string,
   limit: number = 12,
   skip: number = 0
 ): Promise<ProductsResponse> {
-  const response = await fetch(
+  return fetchData<ProductsResponse>(
     `${API_URL}/search?q=${encodeURIComponent(query)}&limit=${limit}&skip=${skip}`
   );
-
-  if (!response.ok) {
-    throw new Error("Unable to search products. Please try again.");
-  }
-
-  return response.json() as Promise<ProductsResponse>;
 }
 
-// Fetch individual product details
-export async function getProductById(id: string): Promise<Product> {
-  const response = await fetch(
+export async function getProductById(
+  id: string
+): Promise<Product> {
+  return fetchData<Product>(
     `${API_URL}/${encodeURIComponent(id)}`
   );
-
-  if (!response.ok) {
-    throw new Error("Unable to load this product.");
-  }
-
-  return response.json() as Promise<Product>;
 }

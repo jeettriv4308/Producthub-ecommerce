@@ -154,3 +154,39 @@ img {
     gap: 24px;
   }
 }
+
+/* Keyboard accessibility */
+
+:focus-visible {
+  outline: 3px solid #b45309;
+  outline-offset: 3px;
+}
+
+/* Form controls */
+
+input,
+select,
+textarea,
+button {
+  font: inherit;
+}
+
+/* Disabled buttons */
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Reduced motion support */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

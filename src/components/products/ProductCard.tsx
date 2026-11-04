@@ -24,21 +24,25 @@ function ProductCard({ product }: ProductCardProps) {
           to={`/products/${product.id}`}
           aria-label={`View ${product.title}`}
         >
-          <img
-            className="product-image"
-            src={product.thumbnail}
-            alt={product.title}
-            loading="lazy"
-            decoding="async"
-          />
+            <img
+              className="product-image"
+              src={product.thumbnail}
+              alt={`${product.title} product image`}
+              loading="lazy"
+              decoding="async"
+            />
         </Link>
 
+        
         <button
           className={`wishlist-button ${isFavorite ? "is-favorite" : ""}`}
           type="button"
           aria-label={
-            isFavorite ? "Remove from wishlist" : "Add to wishlist"
+            isFavorite
+              ? `Remove ${product.title} from wishlist`
+              : `Add ${product.title} to wishlist`
           }
+          aria-pressed={isFavorite}
           onClick={() => toggleWishlist(product)}
         >
           {isFavorite ? "♥" : "♡"}
