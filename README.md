@@ -119,8 +119,6 @@ ProductHub/
 └── README.md
 ```
 
-*Note: This is a simplified overview of the main project structure. Additional component and CSS files are organized within their respective folders.*
-
 ## ⚙️ Installation and Setup
 
 Follow these steps to run ProductHub locally.
@@ -128,7 +126,7 @@ Follow these steps to run ProductHub locally.
 ### 1. Clone the repository
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
+git clone https://github.com/jeettriv4308/Producthub-ecommerce
 ```
 
 ### 2. Navigate to the project directory
