@@ -41,3 +41,24 @@
   border-color: var(--color-accent);
   color: var(--color-accent);
 }
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.primary-button,
+.error-state-btn {
+  transition:
+    background-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.primary-button:hover,
+.error-state-btn:hover {
+  background-color: #92400e;
+}
+
+.primary-button:active,
+.error-state-btn:active {
+  transform: scale(0.98);
+}

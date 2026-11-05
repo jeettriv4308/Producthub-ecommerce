@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import type { Product } from "../../types/product";
 import { useShop } from "../../context/ShopContext";
 import "./ProductCard.css";
+import ProductImage from "../common/ProductImage";
 
 type ProductCardProps = {
   product: Product;
@@ -24,13 +25,11 @@ function ProductCard({ product }: ProductCardProps) {
           to={`/products/${product.id}`}
           aria-label={`View ${product.title}`}
         >
-            <img
-              className="product-image"
+           <ProductImage
               src={product.thumbnail}
               alt={`${product.title} product image`}
-              loading="lazy"
-              decoding="async"
-            />
+              className="product-image"
+           />
         </Link>
 
         

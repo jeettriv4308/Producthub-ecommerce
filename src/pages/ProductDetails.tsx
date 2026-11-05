@@ -6,8 +6,10 @@ import { useShop } from "../context/ShopContext";
 import { getProductById } from "../services/productService";
 import type { Product } from "../types/product";
 import "./ProductDetails.css";
+import usePageTitle from "../hooks/usePageTitle";
 
 export default function ProductDetails() {
+    usePageTitle("Product Details");
   const { id } = useParams();
   const { addToCart, toggleWishlist, isInWishlist } = useShop();
 

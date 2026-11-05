@@ -5,6 +5,7 @@ import ProductGrid from "../components/products/ProductGrid";
 import Pagination from "../components/products/Pagination";
 import EmptyState from "../components/common/EmptyState";
 import ErrorState from "../components/common/ErrorState";
+import usePageTitle from "../hooks/usePageTitle";
 
 import {
   getProducts,
@@ -17,6 +18,7 @@ import "./Products.css";
 const LIMIT = 12;
 
 export default function Products() {
+  usePageTitle("Products");
   const [searchParams, setSearchParams] = useSearchParams();
 
   const search = searchParams.get("search") || "";

@@ -2,8 +2,10 @@
 import { Link } from "react-router-dom";
 import { useShop } from "../context/ShopContext";
 import "./Wishlist.css";
+import usePageTitle from "../hooks/usePageTitle";
 
 export default function Wishlist() {
+  usePageTitle("Wishlist");
   const {
     wishlist,
     removeFromWishlist,

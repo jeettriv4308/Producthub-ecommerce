@@ -7,10 +7,12 @@ import ErrorState from "../components/common/ErrorState";
 
 import { getProducts } from "../services/productService";
 import type { Product } from "../types/product";
+import usePageTitle from "../hooks/usePageTitle";
 
 import "./Home.css";
 
 export default function Home() {
+  usePageTitle("Home");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");

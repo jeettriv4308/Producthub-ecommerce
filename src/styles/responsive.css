@@ -119,3 +119,108 @@
     font-size: 34px;
   }
 }
+/* =================================
+   RESPONSIVE DESIGN
+================================= */
+
+/* Tablet */
+@media screen and (max-width: 1024px) {
+  .container {
+    width: 92%;
+  }
+
+  .hero-inner {
+    gap: 30px;
+  }
+
+  .products-toolbar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 600px) {
+  .container {
+    width: 90%;
+  }
+
+  .hero-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .hero-content {
+    align-items: center;
+  }
+
+  .hero-actions {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .hero-visual {
+    max-width: 100%;
+  }
+
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .products-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .product-card {
+    min-width: 0;
+  }
+
+  .product-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: contain;
+  }
+
+  .product-details {
+    grid-template-columns: 1fr;
+  }
+
+  .cart-item {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Small mobile */
+@media screen and (max-width: 380px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-actions a {
+    width: 100%;
+    text-align: center;
+  }
+}

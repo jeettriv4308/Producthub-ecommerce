@@ -1,8 +1,10 @@
 
 import { Link } from "react-router-dom";
 import EmptyState from "../components/common/EmptyState";
+import usePageTitle from "../hooks/usePageTitle";
 
 export default function NotFound() {
+    usePageTitle("Page Not Found");
   return (
     <main className="container section">
       <EmptyState

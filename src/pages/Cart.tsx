@@ -2,8 +2,10 @@
 import { Link } from "react-router-dom";
 import { useShop } from "../context/ShopContext";
 import "./Cart.css";
+import usePageTitle from "../hooks/usePageTitle";
 
 export default function Cart() {
+    usePageTitle("Shopping Cart");
   const {
     cart,
     cartCount,
